@@ -1,10 +1,34 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const mongoose = require("mongoose");
+const Weight = require("./models/weight");
+
+// const password = process.argv[2];
+// const url = `mongodb+srv://tyVespA:${password}@cluster0.rhuvl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+// mongoose.set("strictQuery", false);
+// mongoose.connect(url);
 
 app.use(express.json());
 app.use(cors());
 app.use(express.static("dist"));
+
+// const weightSchema = new mongoose.Schema({
+//   weight: Number,
+//   id: Number,
+// });
+
+// weightSchema.set("toJSON", {
+//   transform: (document, returnedObject) => {
+//     returnedObject.id = returnedObject._id.toString();
+//     delete returnedObject._id;
+//     delete returnedObject.__v;
+//   },
+// });
+
+// const Weight = mongoose.model("Weight", weightSchema);
 
 let weights = [
   {
@@ -30,7 +54,9 @@ let weights = [
 ];
 
 app.get("/api/weights", (req, res) => {
-  res.json(weights);
+  Weight.find({}).then((weights) => {
+    res.json(weights);
+  });
 });
 
 app.get("/api/weights/:id", (req, res) => {
@@ -69,7 +95,7 @@ app.post("/api/weights", (req, res) => {
   weights = weights.concat(weight);
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log("App running on port " + PORT);
 });
