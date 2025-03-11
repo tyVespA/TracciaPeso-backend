@@ -16,7 +16,6 @@ mongoose
 
 const weightSchema = new mongoose.Schema({
   weight: Number,
-  id: Number,
 });
 
 weightSchema.set("toJSON", {
