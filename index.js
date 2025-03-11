@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
-const PORT = 3001;
+const cors = require("cors");
 
 app.use(express.json());
+app.use(cors());
+app.use(express.static("dist"));
 
 let weights = [
   {
@@ -27,16 +29,12 @@ let weights = [
   },
 ];
 
-app.get("/", (req, res) => {
-  res.send("HOME");
-});
-
 app.get("/api/weights", (req, res) => {
   res.json(weights);
 });
 
 app.get("/api/weights/:id", (req, res) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
   const weight = weights.find((weight) => weight.id === id);
 
   if (weight) {
@@ -47,7 +45,7 @@ app.get("/api/weights/:id", (req, res) => {
 });
 
 app.delete("/api/weights/:id", (req, res) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
   weights = weights.filter((weight) => weight.id !== id);
 
   res.status(204).end();
@@ -56,7 +54,7 @@ app.delete("/api/weights/:id", (req, res) => {
 app.post("/api/weights", (req, res) => {
   const weight = {
     id: weights.length + 1,
-    weight: req.body.weight,
+    weight: Number(req.body.weight),
   };
 
   if (!req.body.weight) {
@@ -71,6 +69,7 @@ app.post("/api/weights", (req, res) => {
   weights = weights.concat(weight);
 });
 
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log("App running on port " + PORT);
 });
