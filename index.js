@@ -14,18 +14,43 @@ app.get("/api/weights", (req, res) => {
   });
 });
 
-app.get("/api/weights/:id", (req, res) => {
-  Weight.findById(req.params.id).then((weight) => {
-    res.json(weight);
-  });
+app.get("/api/weights/:id", (req, res, next) => {
+  Weight.findById(req.params.id)
+    .then((weight) => {
+      if (weight) {
+        res.json(weight);
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch((err) => next(err));
 });
 
-// app.delete("/api/weights/:id", (req, res) => {
-//   const id = Number(req.params.id);
-//   weights = weights.filter((weight) => weight.id !== id);
+app.delete("/api/weights/:id", (req, res, next) => {
+  Weight.findByIdAndDelete(req.params.id)
+    .then((result) => {
+      res.status(204).end();
+    })
+    .catch((err) => next(err));
+});
 
-//   res.status(204).end();
-// });
+app.put("/api/weights/:id", (req, res, next) => {
+  const body = req.body;
+
+  const weight = {
+    weight: body.weight,
+  };
+
+  Weight.findByIdAndUpdate(req.params.id, weight, { new: true })
+    .then((updatedWeight) => {
+      if (updatedWeight) {
+        res.json(updatedWeight);
+      } else {
+        res.status(404).end;
+      }
+    })
+    .catch((err) => next(err));
+});
 
 app.post("/api/weights", (req, res) => {
   const body = req.body;
@@ -44,6 +69,23 @@ app.post("/api/weights", (req, res) => {
     res.json(savedWeight);
   });
 });
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
+
+const errorHandler = (err, req, res, next) => {
+  console.error(err.message);
+
+  if (err.name === "CastError") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+  next(err);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
