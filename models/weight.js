@@ -15,7 +15,11 @@ mongoose
   });
 
 const weightSchema = new mongoose.Schema({
-  weight: Number,
+  weight: {
+    type: Number,
+    min: [0.1, "Weight must be at least 0.1"],
+    required: true,
+  },
 });
 
 weightSchema.set("toJSON", {

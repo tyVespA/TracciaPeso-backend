@@ -35,13 +35,17 @@ app.delete("/api/weights/:id", (req, res, next) => {
 });
 
 app.put("/api/weights/:id", (req, res, next) => {
-  const body = req.body;
+  const { weight } = req.body;
 
-  const weight = {
-    weight: body.weight,
-  };
+  // const weight = {
+  //   weight: body.weight,
+  // };
 
-  Weight.findByIdAndUpdate(req.params.id, weight, { new: true })
+  Weight.findByIdAndUpdate(
+    req.params.id,
+    { weight },
+    { new: true, runValidators: true, context: "query" }
+  )
     .then((updatedWeight) => {
       if (updatedWeight) {
         res.json(updatedWeight);
@@ -52,22 +56,19 @@ app.put("/api/weights/:id", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post("/api/weights", (req, res) => {
+app.post("/api/weights", (req, res, next) => {
   const body = req.body;
-
-  if (!body.weight) {
-    return res.status(400).json({
-      error: "content missing",
-    });
-  }
 
   const weight = new Weight({
     weight: Number(body.weight),
   });
 
-  weight.save().then((savedWeight) => {
-    res.json(savedWeight);
-  });
+  weight
+    .save()
+    .then((savedWeight) => {
+      res.json(savedWeight);
+    })
+    .catch((err) => next(err));
 });
 
 const unknownEndpoint = (req, res) => {
@@ -81,6 +82,8 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name === "CastError") {
     return res.status(400).send({ error: "malformatted id" });
+  } else if (err.name === "ValidationError") {
+    return res.status(400).json({ error: err.message });
   }
   next(err);
 };
