@@ -15,39 +15,34 @@ app.get("/api/weights", (req, res) => {
 });
 
 app.get("/api/weights/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const weight = weights.find((weight) => weight.id === id);
-
-  if (weight) {
+  Weight.findById(req.params.id).then((weight) => {
     res.json(weight);
-  } else {
-    res.status(400).end();
-  }
+  });
 });
 
-app.delete("/api/weights/:id", (req, res) => {
-  const id = Number(req.params.id);
-  weights = weights.filter((weight) => weight.id !== id);
+// app.delete("/api/weights/:id", (req, res) => {
+//   const id = Number(req.params.id);
+//   weights = weights.filter((weight) => weight.id !== id);
 
-  res.status(204).end();
-});
+//   res.status(204).end();
+// });
 
 app.post("/api/weights", (req, res) => {
-  const weight = {
-    id: weights.length + 1,
-    weight: Number(req.body.weight),
-  };
+  const body = req.body;
 
-  if (!req.body.weight) {
+  if (!body.weight) {
     return res.status(400).json({
       error: "content missing",
     });
   }
 
-  console.log(weight);
-  res.json(weight);
+  const weight = new Weight({
+    weight: Number(body.weight),
+  });
 
-  weights = weights.concat(weight);
+  weight.save().then((savedWeight) => {
+    res.json(savedWeight);
+  });
 });
 
 const PORT = process.env.PORT;
