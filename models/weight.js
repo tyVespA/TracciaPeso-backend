@@ -18,6 +18,7 @@ const weightSchema = new mongoose.Schema({
   weight: {
     type: Number,
     min: [0.1, "Weight must be at least 0.1"],
+    max: [299, "No one weights more than 300!"],
     required: true,
   },
 });
