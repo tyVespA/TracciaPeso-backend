@@ -37,10 +37,6 @@ app.delete("/api/weights/:id", (req, res, next) => {
 app.put("/api/weights/:id", (req, res, next) => {
   const { weight } = req.body;
 
-  // const weight = {
-  //   weight: body.weight,
-  // };
-
   Weight.findByIdAndUpdate(
     req.params.id,
     { weight },
