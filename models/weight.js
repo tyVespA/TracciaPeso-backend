@@ -14,14 +14,18 @@ mongoose
     console.log("error connecting to MongoDB:", error.message);
   });
 
-const weightSchema = new mongoose.Schema({
-  weight: {
-    type: Number,
-    min: [0.1, "Weight must be at least 0.1"],
-    max: [299, "No one weights more than 300!"],
-    required: true,
+const weightSchema = new mongoose.Schema(
+  {
+    weight: {
+      type: Number,
+      min: [0.1, "Weight must be at least 0.1"],
+      max: [299, "No one weights more than 300!"],
+      required: true,
+    },
+    userId: { type: String, required: true },
   },
-});
+  { timestamps: true }
+);
 
 weightSchema.set("toJSON", {
   transform: (document, returnedObject) => {
