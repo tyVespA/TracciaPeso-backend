@@ -14,20 +14,17 @@ mongoose
     console.log("error connecting to MongoDB:", error.message);
   });
 
-const weightSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
-    weight: {
-      type: Number,
-      min: [0.1, "Weight must be at least 0.1"],
-      max: [299, "No one weights more than 300!"],
-      required: true,
-    },
-    userId: { type: String, required: true },
+    firebaseId: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    name: { type: String },
+    picture: { type: String },
   },
   { timestamps: true }
 );
 
-weightSchema.set("toJSON", {
+UserSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -35,4 +32,4 @@ weightSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("Weight", weightSchema);
+module.exports = mongoose.model("User", UserSchema);
