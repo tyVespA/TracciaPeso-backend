@@ -2,6 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const authenticateUser = require("./middleware/auth");
 const authRoutes = require("./auth/firebase/authTest");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const Weight = require("./models/weight");
@@ -16,9 +17,14 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.static("dist"));
+
+app.use(express.static(path.join(__dirname, "dist")));
 
 app.use("/", authRoutes);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 app.get("/api/weights", authenticateUser, (req, res) => {
   Weight.find({ userId: req.user.id }).then((weights) => {
@@ -90,7 +96,7 @@ const errorHandler = (err, req, res, next) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log("App running on port " + PORT);
 });
