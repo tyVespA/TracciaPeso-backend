@@ -6,7 +6,10 @@ const express = require("express");
 const cors = require("cors");
 const Weight = require("./models/weight");
 
-const allowedOrigins = ["http://localhost:5173", "deployed-link"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://traccia-peso.vercel.app/",
+];
 
 const app = express();
 app.use(express.json());
