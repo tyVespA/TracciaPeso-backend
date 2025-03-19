@@ -6,9 +6,7 @@ Il codice per la sezione frontend è disponibile [QUI](https://github.com/tyVesp
 
 ## 🚀 Demo
 
-🔗 [Live Website](https://weight-tracker-xyes.onrender.com/)
-
-L'app è hostata su render.com e può volerci fino a un minuto per caricarsi alla prima visualizzazione
+🔗 [Live Website](https://traccia-peso.vercel.app/)
 
 ## 🛠 Tecnologie Utilizzate
 
@@ -37,7 +35,7 @@ Backend:
 
 ## 📸 Screenshot
 
-![Anteprima dell'app](https://www.marcomigliavacca.it/_next/image?url=%2Fimages%2FprojectsImages%2FmeteoThumbnail.jpg&w=640&q=75)
+![Anteprima dell'app](https://www.marcomigliavacca.it/_next/image?url=%2Fimages%2FprojectsImages%2FmeteoThumbnail.jpg&w=640&q=75) change
 
 ## TODO
 
