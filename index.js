@@ -31,6 +31,10 @@ app.use((req, res, next) => {
 
 app.use("/", authRoutes);
 
+app.get("/ping", (req, res) => {
+  res.status(200).send("pong");
+});
+
 app.get("/api/weights", authenticateUser, (req, res) => {
   Weight.find({ userId: req.user.id }).then((weights) => {
     res.json(weights);
