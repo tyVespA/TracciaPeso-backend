@@ -32,20 +32,8 @@ Backend:
 - Autenticazione utenti con Firebase Authentication
 - Backend con Node.js ed Express
 - Database NoSQL con MongoDB e Mongoose
+- Error Handling sia nel backend che frontend
 
 ## 📸 Screenshot
 
-![Anteprima dell'app](https://www.marcomigliavacca.it/_next/image?url=%2Fimages%2FprojectsImages%2FmeteoThumbnail.jpg&w=640&q=75) change
-
-## TODO
-
-- improve styles (charts popup: font bold)
-- fix demo user
-  <!-- - fix UserPreview on mobile -->
-  <!-- - add mobile media queries -->
-  <!-- - add message when not logged in -->
-  <!-- - add message when no weights -->
-  <!-- - add icons(?) -->
-  <!-- - add error messages popups -->
-  <!-- - add auth -->
-- add calendar(?)
+![Anteprima dell'app](https://www.marcomigliavacca.it/_next/image?url=%2Fimages%2FprojectsImages%2FtracciaPesoThumbnail.jpg&w=640&q=75)
