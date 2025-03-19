@@ -6,19 +6,34 @@ const express = require("express");
 const cors = require("cors");
 const Weight = require("./models/weight");
 
-const allowedOrigins = ["http://localhost:5173", "deployed-link"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://traccia-peso.vercel.app",
+];
+
+const corsOptions = {
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
 
 const app = express();
+
 app.use(express.json());
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 app.use(express.static("dist"));
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
 
 app.use("/", authRoutes);
+
+app.get("/ping", (req, res) => {
+  res.status(200).send("pong");
+});
 
 app.get("/api/weights", authenticateUser, (req, res) => {
   Weight.find({ userId: req.user.id }).then((weights) => {
